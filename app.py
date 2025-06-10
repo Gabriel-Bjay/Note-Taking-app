@@ -8,7 +8,7 @@ def add_note():
 def view_notes():
     try:
         with open("notes.txt", "r") as file:
-            notes = file.readline()
+            notes = file.readlines()
             if notes:
                 print("\nYour Notes:")
                 for idx, note in enumerate(notes.splitlines(), start=1):
@@ -17,6 +17,23 @@ def view_notes():
                 print("No notes found. Please add a note first.")
     except FileNotFoundError:
         print("No notes found. Please add a note first.")
+
+
+def delete_notes():
+    view_notes()
+    try:
+        note_number = int(input("Enter the note number to delete: "))
+        with open("notes.txt", "r") as file:
+            notes = file.readlines()
+        if 1 <= note_number <= len(notes):
+            removed_note = notes.pop(note_number - 1)
+            with open("notes.txt", "w") as file:
+                file.writelines(notes)
+            print(f"{removed_note}: deleted successfully!")
+        else:
+            print("Invalid note number.")
+    except ValueError:
+        print("Please enter a valid number.")
 
 
 def main():
@@ -35,7 +52,7 @@ def main():
         elif choice == "2":
             view_notes()
         elif choice == "3":
-            pass  # Placeholder for delete note functionality
+            delete_notes()
         elif choice == "4":
             print("Exiting the app. Goodbye!")
             break
